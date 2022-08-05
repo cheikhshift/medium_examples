@@ -9,7 +9,8 @@ func Authenticate(userid string) error {
 
 // ConnectToTCP will connect to the server
 // following the protocol defined [RFC 000]
-// [RFC 000] : https://example.com
+//
+// [RFC 000]: https://example.com
 func ConnectToTCP() error {
 
 }
