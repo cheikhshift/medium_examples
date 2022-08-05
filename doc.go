@@ -23,6 +23,9 @@ func AweSomeFactory() Awesome {
 
 // Awesome is awesome
 // To instantiate, refer to [medium_examples.AweSomeFactory] 
+// Remember to [connect] first
+//
+// [connect]: medium_examples.ConnectToTCP
 type Awesome struct {
 	Ids []string
 }
