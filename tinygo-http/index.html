@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+Copyright 2018 The Go Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Go wasm</title>
+  </head>
+
+  <body>
+   
+    <script src="wasm_exec.js"></script>
+
+    <script>
+      if (!WebAssembly.instantiateStreaming) {
+        // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+
+      const go = new Go();
+
+      let  inst;
+
+      function getString(addr, length){
+          const memory = inst.exports.memory; 
+
+          const extractedBuffer = 
+            new Uint8Array(memory.buffer, addr, length);
+     
+
+
+          const str = 
+            new TextDecoder("utf8").decode(extractedBuffer);
+           
+           return str
+      }
+
+      go.importObject.env = {
+          ...go.importObject.env ,
+          'main.throw': (e) => {
+            console.log(e)
+            throw e
+          },
+          'main.throw2': (e, length) => {
+            console.log(e)
+            throw getString(e, length)
+   
+          },
+      }
+
+      WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(
+        async (result) => {
+          inst = result.instance;
+          go.run(inst);
+        }
+      );
+
+    </script>
+
+  
+  </body>
+</html>
