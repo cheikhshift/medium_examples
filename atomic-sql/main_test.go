@@ -12,7 +12,7 @@ import (
 
 func TestPerformPurchase(t *testing.T) {
 
-	db, err := sql.Open("mysql", "root:MAhomies69@/Stock")
+	db, err := sql.Open("mysql", "root:password@/Stock")
 	if err != nil {
 		log.Fatal(err)
 	}
