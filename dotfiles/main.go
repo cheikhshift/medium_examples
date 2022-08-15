@@ -63,5 +63,5 @@ func main() {
 		return true
 	})
 
-	fmt.Println(os.Environ())
+	fmt.Println("API_MYSQL : ", os.Getenv("API_MYSQL"))
 }
