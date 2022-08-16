@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FS Access</title>
+</head>
+<body>
+	<button onclick="getFolder()">Save Config</button>
+	<button onclick="readConfig()">Read Config</button>
+	<script type="text/javascript">
+		
+		let dirHandle, fileData;
+
+		async function readConfig(){
+
+		 if(!dirHandle)
+		  dirHandle = await window.showDirectoryPicker();
+
+		  const file = await dirHandle.getFileHandle("config.json", {
+    			create: true
+		  })
+
+		  fileData = await file.getFile();
+
+		  let text = await fileData.text()
+
+		  alert(text)
+
+		}
+
+
+		async function getFolder() {
+		  // open file picker
+		 if(!dirHandle)
+		  dirHandle = await window.showDirectoryPicker();
+
+		  const file = await dirHandle.getFileHandle("config.json", {
+    			create: true
+		  })
+
+		  const sampleConfig = JSON.stringify({
+		  	prop1 : true,
+		  	prop2 : "Very cool key"
+		  })
+
+		  const blob = new Blob([sampleConfig])
+
+		  const writableStream = await file.createWritable();
+
+			  // write our file
+		  await writableStream.write(blob);
+
+		  // close the file and write the contents to disk.
+		  await writableStream.close();
+
+		}
+
+	
+	</script>
+</body>
+</html>
